@@ -1,0 +1,11 @@
+syntax = "proto3";
+package pb;
+
+enum  SERVICE {
+    NULL=0;
+    DB=1;
+    LOGIN=2;
+    G001=3;
+    GW=4;
+}
+

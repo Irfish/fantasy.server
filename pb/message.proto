@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pb;
+
+message Header {
+    int32 id=1;
+    int64 userId=2;
+    int64 sessionId=3;
+    int32 serviceId0=4;
+    int32 serviceId1=5;
+    string token=6;
+    int64 tokenExpiredTime=7;
+}
+
+message Message{
+    Header header=1;
+    bytes body=2;
+}

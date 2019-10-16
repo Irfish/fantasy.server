@@ -1,0 +1,12 @@
+syntax = "proto3";
+package pb;
+
+message CtsUserEnter{
+    int32 userId=1;
+    bytes token=2;
+}
+
+message StcUserEnter{
+    int32 userId=1;
+    string result=2;
+}

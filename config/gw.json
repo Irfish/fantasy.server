@@ -1,0 +1,7 @@
+{
+  "LogLevel": "release",
+  "LogPath": "log",
+  "TCPAddr": "localhost:2555",
+  "MaxConnNum": 20000,
+  "EtcdAddr":"192.168.0.131:2888"
+}

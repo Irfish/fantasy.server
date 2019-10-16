@@ -1,0 +1,14 @@
+syntax = "proto3";
+package pb;
+
+message RpcTestReq {
+    string req =1;
+}
+
+message RpcTestRsp {
+    string rsp =1;
+}
+
+service RpcTest {
+    rpc Test(RpcTestReq) returns (RpcTestRsp);
+}
