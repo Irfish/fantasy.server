@@ -7,21 +7,21 @@
 
 3. mysql做持久化存储
 
-#service-db
-处理持久化数据 
-#service-game
+# service-db
+处理持久化数据
+# service-game
 游戏逻辑服
-#service-gw
+# service-gw
 网关服务器,负责转发客户端消息
-#service-log
+# service-log
 处理日志
-#service-login
+# service-login
 登陆
-#service-web
+# service-web
 web服务器
-#b.sh
+# b.sh
 编译项目并上传到远程服务器
-#运行
+# 运行
 每个服务可单独运行，也可以通过./b.sh 生成的fantasy-s运行
     运行gateway服务器
     ./fantasy-s -s gw
