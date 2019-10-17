@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/Irfish/component/pid"
 	db "github.com/Irfish/fantasy.server/service-db/service"
 	g "github.com/Irfish/fantasy.server/service-game/service"
 	gw "github.com/Irfish/fantasy.server/service-gw/service"
@@ -16,6 +17,9 @@ var s = flag.String("s", "", "service name:g001,db,gw,login,web,log")
 
 func main() {
 	flag.Parse()
+	if *s != "" {
+		pid.Pid(*s)
+	}
 	switch *s {
 	case "g001":
 		g.Run()
