@@ -1,5 +1,5 @@
 #### fantasy.server (游戏服务器)
-基于leaf编写的分布式服务器框架，其中对leaf做了一些修改和扩展，并上传到[component](https://github.com/Irfish/component)中，服务器之间使用rpc或tcp进行交互
+基于[leaf](https://github.com/name5566/leaf)编写的分布式服务器框架，其中对leaf做了一些修改和扩展，并上传到[component](https://github.com/Irfish/component)中，服务器之间使用rpc或tcp进行交互
 
 1. 使用etcd做服务发现
 
