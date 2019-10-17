@@ -1,6 +1,6 @@
 {
-  "LogLevel": "release",
-  "LogPath": "log",
+  "LogLevel": "debug",
+  "LogPath": "",
   "TCPAddr": "localhost:2333",
   "MaxConnNum": 20000,
   "EtcdAddr":"192.168.0.131:2888"
