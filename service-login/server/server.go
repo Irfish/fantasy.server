@@ -47,8 +47,8 @@ func (s *Server) OnNodeUnregister(k string) {
 	}
 }
 
-func (s *Server) GetOneGwAddr() string {
-	for _, n := range s.GatewayNodes {
+func GetOneGwAddr() string {
+	for _, n := range service.GatewayNodes {
 		return n.Address
 	}
 	return ""
