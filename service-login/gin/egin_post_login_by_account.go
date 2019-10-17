@@ -28,18 +28,18 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, result)
 	}()
-	accountId, ok := c.Keys["accountId"]
+	accountId, ok := c.GetPostForm("accountId")
 	if !ok {
 		e = fmt.Errorf("can not found accountId")
 		return
 	}
-	password, ok := c.Keys["password"]
+	password, ok := c.GetPostForm("password")
 	if !ok {
 		e = fmt.Errorf("can not found password")
 		return
 	}
 	u := orm.User{
-		UserName: accountId.(string),
+		UserName: accountId,
 	}
 	exist, err := orm.UserXorm().Get(&u)
 	if err != nil {
@@ -50,8 +50,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		e = fmt.Errorf("user not found")
 		return
 	}
-	pwd := password.(string)
-	decodePwd := hash.Md5WithBase64(pwd)
+	decodePwd := hash.Md5WithBase64(password)
 	if u.Pwd == decodePwd {
 		e = fmt.Errorf("password not illegal")
 		return
