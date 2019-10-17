@@ -19,14 +19,27 @@
 登陆
 # service-web
 web服务器
-# b.sh
+
+# p.sh
 编译项目并上传到远程服务器
-# 运行
-每个服务可单独运行，也可以通过./b.sh 生成的fantasy-s运行
 
-如：运行service-gw
 
-    ./fantasy-s -s gw
+# 运行服务:
+
+使用./b_linux.sh  生成二进制可执行文件 fantasy-s
+
+    ./fantasy-s -s gw  (linux)
+    
+   or
+   
+ 使用./b_win.sh 生成exe可执行文件 fantasy-s.exe
+ 
+    ./fantasy-s.exe -s g001 (win)
+    
+
+每个服务也可以单独编译并运行
+
+
           
 
 

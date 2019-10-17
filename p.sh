@@ -2,10 +2,10 @@
 #配置ssh免密登陆
 #ssh-keygen   生成 私钥和公钥 or   ssh-keygen -t rsa
 #cd ~/.ssh  查看秘钥是否生成（id_rsa:私钥  id_rsa.pub:公钥）
-#ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.10  将公钥copy到远程服务器
+#ssh-copy-id -i ~/.ssh/id_rsa.pub root@remotehost 将公钥copy到远程服务器
 
 #远程服务器地址
-SSH_ADDR="root@192.168.0.131"
+SSH_ADDR="root@remotehost"
 #当前目录
 ROOT_PATH=`pwd`
 #可执行文件名称
