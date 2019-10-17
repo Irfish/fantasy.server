@@ -22,7 +22,9 @@ web服务器
 # b.sh
 编译项目并上传到远程服务器
 # 运行
-每个服务可单独运行，也可以通过./b.sh 生成的fantasy-s运行运行gateway服务器
+每个服务可单独运行，也可以通过./b.sh 生成的fantasy-s运行
+
+如：运行service-gw
 
     ./fantasy-s -s gw
           
