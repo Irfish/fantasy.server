@@ -1,11 +1,14 @@
 package service
 
 import (
+	"reflect"
+
 	"github.com/Irfish/component/etcd3"
 	"github.com/Irfish/component/leaf"
 	lconf "github.com/Irfish/component/leaf/conf"
 	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/service-gw/base"
+	"github.com/Irfish/fantasy.server/service-gw/msg"
 	"github.com/Irfish/fantasy.server/service-gw/server"
 )
 
@@ -18,6 +21,8 @@ func Run() {
 	lconf.ProfilePath = base.Server.ProfilePath
 	//连接etcd
 	etcd3.Init([]string{base.Server.EtcdAddr}, 3)
-
+	msg.Processor.Range(func(id uint16, t reflect.Type) {
+		log.Debug("message: id =%d,%s", id, t.String())
+	})
 	leaf.Run(server.Module)
 }

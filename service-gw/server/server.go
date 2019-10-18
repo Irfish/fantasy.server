@@ -31,7 +31,7 @@ func (s *Server) OnInit() {
 		KeyFile:         base.Server.KeyFile,
 		TCPAddr:         base.Server.TCPAddr,
 		LenMsgLen:       base.LenMsgLen,
-		LittleEndian:    base.LittleEndian,
+		LittleEndian:    true,
 		Processor:       msg.Processor,
 		AgentChanRPC:    ChanRpc,
 	}

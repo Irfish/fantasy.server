@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/golang/protobuf/proto"
 	"github.com/Irfish/component/leaf/gate"
 	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/pb"
 	"github.com/Irfish/fantasy.server/service-gw/msg"
+	"github.com/golang/protobuf/proto"
 )
 
 func init() {
@@ -16,12 +16,14 @@ func init() {
 
 func rpcNewAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	_ = a
+	log.Debug("one client connect to gw")
+	sendMessage(a, &pb.StcUserEnter{UserId:int32(12500),Result:"sddff"})
 }
 
 func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
 	_ = a
+	log.Debug("one client disconnect from gw")
 }
 
 func rpcSwitchRouterMsg(args []interface{}) {
@@ -42,4 +44,17 @@ func rpcSwitchRouterMsg(args []interface{}) {
 			break
 		}
 	}
+}
+
+func sendMessage(a gate.Agent, m interface{}) {
+	m1 := m.(proto.Message)
+	body, err := msg.Processor.Marshal(m1)
+	if err != nil {
+		log.Error("SendToService proto.Marshal message err:%s", err.Error())
+	}
+	bytes := make([]byte, 0)
+	for _, b := range body {
+		bytes = append(bytes, b...)
+	}
+	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{UserId:1000}})
 }

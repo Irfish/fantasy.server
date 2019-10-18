@@ -3,9 +3,9 @@ package gin
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Irfish/component/hash"
-	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/service-login/orm"
 	"github.com/Irfish/fantasy.server/service-login/server"
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,6 @@ func NewLoginByAccount() LoginByAccount {
 }
 
 func (p *LoginByAccount) handle(c *gin.Context) {
-	log.Debug("post login %v", c.Keys)
 	var e error
 	result := gin.H{}
 	defer func() {
@@ -33,13 +32,18 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		e = fmt.Errorf("can not found accountId")
 		return
 	}
+	id, err := strconv.Atoi(accountId)
+	if err != nil {
+		e = fmt.Errorf("accountId can not convert to int")
+		return
+	}
 	password, ok := c.GetPostForm("password")
 	if !ok {
 		e = fmt.Errorf("can not found password")
 		return
 	}
 	u := orm.User{
-		UserName: accountId,
+		Id: int64(id),
 	}
 	exist, err := orm.UserXorm().Get(&u)
 	if err != nil {
@@ -51,7 +55,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		return
 	}
 	decodePwd := hash.Md5WithBase64(password)
-	if u.Pwd == decodePwd {
+	if u.Pwd != decodePwd {
 		e = fmt.Errorf("password not illegal")
 		return
 	}
