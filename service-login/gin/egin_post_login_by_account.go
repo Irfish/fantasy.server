@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/Irfish/component/hash"
+	"github.com/Irfish/component/token"
 	"github.com/Irfish/fantasy.server/service-login/orm"
 	"github.com/Irfish/fantasy.server/service-login/server"
 	"github.com/gin-gonic/gin"
@@ -23,13 +25,14 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	result := gin.H{}
 	defer func() {
 		if e != nil {
+			result["status"] = false
 			result["err"] = e.Error()
 		}
 		c.JSON(http.StatusOK, result)
 	}()
 	accountId, ok := c.GetPostForm("accountId")
 	if !ok {
-		e = fmt.Errorf("can not found accountId")
+		e = fmt.Errorf("can not found accountId key")
 		return
 	}
 	id, err := strconv.Atoi(accountId)
@@ -39,7 +42,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	}
 	password, ok := c.GetPostForm("password")
 	if !ok {
-		e = fmt.Errorf("can not found password")
+		e = fmt.Errorf("can not found password key")
 		return
 	}
 	u := orm.User{
@@ -51,7 +54,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		return
 	}
 	if !exist {
-		e = fmt.Errorf("user not found")
+		e = fmt.Errorf("user not exist ")
 		return
 	}
 	decodePwd := hash.Md5WithBase64(password)
@@ -61,9 +64,16 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	}
 	gwAddr := server.GetOneGwAddr()
 	if gwAddr == "" {
-		e = fmt.Errorf("can not found service gw")
+		e = fmt.Errorf("can not found service gateway")
 		return
 	}
+	expireTime := time.Now().Add(time.Second * 60 * 60 * 1).Unix()
+	token := token.GenToken(expireTime, token.GetTokenKey(), u.Id)
+
+	result["userId"] = u.Id
+	result["expireTime"] = expireTime
+	result["token"] = token
 	result["status"] = true
 	result["gw"] = gwAddr
+	result["err"] = ""
 }

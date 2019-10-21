@@ -18,8 +18,10 @@ func init() {
 
 func router() {
 	msg.Processor.SetRouter(&pb.CtsUserEnter{}, ChanRpc)
+	msg.Processor.SetRouter(&pb.CtsUserAuthentication{}, ChanRpc)
 }
 
 func registerHandler() {
 	handler(&pb.CtsUserEnter{}, ctsUserEnterHandler)
+	handler(&pb.CtsUserAuthentication{}, ctsUserAuthenticationHandler)
 }

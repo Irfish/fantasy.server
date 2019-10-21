@@ -1,0 +1,14 @@
+syntax = "proto3";
+package pb;
+
+message CtsUserAuthentication{
+    int32 userId=1;
+    bytes token=2;
+    int64 tokenExpireTime=3;
+}
+
+message StcUserAuthentication{
+    bool status =1;
+    string result=2;
+    int32 sessionId=3;
+}

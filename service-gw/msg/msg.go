@@ -12,4 +12,6 @@ func init() {
 	Processor.Register(&pb.Message{})
 	Processor.Register(&pb.CtsUserEnter{})
 	Processor.Register(&pb.StcUserEnter{})
+	Processor.Register(&pb.CtsUserAuthentication{})
+	Processor.Register(&pb.StcUserAuthentication{})
 }
