@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/Irfish/component/leaf/gate"
 	"github.com/Irfish/component/log"
+	"github.com/Irfish/component/uuid"
 	"github.com/Irfish/fantasy.server/pb"
 	"github.com/Irfish/fantasy.server/service-gw/msg"
 	"github.com/golang/protobuf/proto"
@@ -16,6 +17,8 @@ func init() {
 
 func rpcNewAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
+	sessionId:= uuid.GenUid()
+	a.SetUserData(sessionId)
 	log.Debug("one client connect to gw")
 	sendMessage(a, &pb.StcUserEnter{UserId:int32(12500),Result:"sddff"})
 }

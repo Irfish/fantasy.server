@@ -10,5 +10,5 @@ message CtsUserAuthentication{
 message StcUserAuthentication{
     bool status =1;
     string result=2;
-    int32 sessionId=3;
+    int64 sessionId=3;
 }
