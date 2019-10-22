@@ -34,7 +34,7 @@ func (s *Server) OnInit() {
 		KeyFile:         base.Server.KeyFile,
 		TCPAddr:         base.Server.TCPAddr,
 		LenMsgLen:       base.LenMsgLen,
-		LittleEndian:    base.LittleEndian,
+		LittleEndian:    true,
 		Processor:       msg.Processor,
 		AgentChanRPC:    ChanRpc,
 	}
@@ -45,7 +45,7 @@ func (s *Server) OnInit() {
 		skeleton.Run(s.skeletonCloseSig)
 	}()
 	//注册到etcd
-	s.SetNodeData(&etcd3.Node{Key: pb.GetServerKey(pb.SERVICE_G001), Name: pb.GetName(pb.SERVICE_GW), Address: base.Server.TCPAddr, Version: "v1.0"})
+	s.SetNodeData(&etcd3.Node{Key: pb.GetServerKey(pb.SERVICE_G001), Name: pb.GetName(pb.SERVICE_G001), Address: base.Server.TCPAddr, Version: "v1.0"})
 	etcd3.RegisterNode(s)
 }
 
@@ -71,5 +71,8 @@ func sendMessage(a gate.Agent, m interface{}) {
 	for _, b := range body {
 		bytes = append(bytes, b...)
 	}
-	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{}})
+	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{
+		ServiceId0: int32(pb.SERVICE_GW),
+		UserId:     1003,
+	}})
 }

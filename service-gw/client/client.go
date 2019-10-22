@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/Irfish/component/leaf/chanrpc"
 	"github.com/Irfish/component/leaf/tcpclient"
 	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/pb"
@@ -28,6 +29,11 @@ type Client struct {
 	ServiceAddr   string
 	AutoReconnect bool
 	Agent         tcpclient.Agent
+	ServerChanRpc *chanrpc.Server
+}
+
+func (c *Client) AppendOuterChanRpc(name string, chanRpc *chanrpc.Server) {
+	c.Client.OuterChanRPC[name] = chanRpc
 }
 
 func (c *Client) Init() {
@@ -38,19 +44,24 @@ func (c *Client) Init() {
 		HTTPTimeout:     base.HTTPTimeout,
 		TCPAddr:         c.ServiceAddr,
 		LenMsgLen:       base.LenMsgLen,
-		LittleEndian:    base.LittleEndian,
+		LittleEndian:    true,
 		Processor:       msg.Processor,
 		AgentChanRPC:    skeleton.ChanRPCServer,
 		Id:              c.Id,
 		AutoReconnect:   c.AutoReconnect,
 		Skeleton:        skeleton,
+		OuterChanRPC:    make(map[string]*chanrpc.Server, 0),
 	}
 	c.InitRegister()
 	c.initHandler()
 }
 
 func (c *Client) SendToService(msg proto.Message) {
-	sendMessage(serviceToAgent[c.Id], msg)
+	if a, ok := serviceToAgent[c.Id]; ok {
+		sendMessage(a, msg)
+		return
+	}
+	log.Debug("client agent not found:%s", c.Id)
 }
 
 func sendMessage(a tcpclient.Agent, m interface{}) {

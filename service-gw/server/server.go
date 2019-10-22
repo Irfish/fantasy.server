@@ -3,9 +3,11 @@ package server
 import (
 	"github.com/Irfish/component/etcd3"
 	"github.com/Irfish/component/leaf/gate"
+	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/pb"
 	"github.com/Irfish/fantasy.server/service-gw/base"
 	"github.com/Irfish/fantasy.server/service-gw/msg"
+	"github.com/golang/protobuf/proto"
 )
 
 var (
@@ -70,3 +72,16 @@ func (s *Server) GetNodePrefix() string {
 func (s *Server) OnNodeRegister(k string, v interface{}) {}
 
 func (s *Server) OnNodeUnregister(k string) {}
+
+func sendMessage(a gate.Agent, m interface{}) {
+	m1 := m.(proto.Message)
+	body, err := msg.Processor.Marshal(m1)
+	if err != nil {
+		log.Error("SendToService proto.Marshal message err:%s", err.Error())
+	}
+	bytes := make([]byte, 0)
+	for _, b := range body {
+		bytes = append(bytes, b...)
+	}
+	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{UserId: 1000}})
+}

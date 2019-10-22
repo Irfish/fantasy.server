@@ -9,11 +9,16 @@ import (
 func ctsUserAuthenticationHandler(args []interface{}) {
 	m := args[0].(*pb.CtsUserAuthentication)
 	a := args[1].(gate.Agent)
-	log.Debug("received message form client:%s", m.UserId)
-	userData :=a.UserData()
-	id:= userData.(int64)
-	sendMessage(a,&pb.StcUserAuthentication{
-		Result:"user authentication success",
-		SessionId:id,
+	//log.Debug("received message form client:%d", m.UserId)
+	userData := a.UserData()
+	sessionId := userData.(int64)
+	e := UserManager.UserAuthentication(m.UserId, sessionId)
+	if e != nil {
+		log.Debug(e.Error())
+		return
+	}
+	sendMessage(a, &pb.StcUserAuthentication{
+		Result:    "user authentication success",
+		SessionId: sessionId,
 	})
 }

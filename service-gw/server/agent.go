@@ -13,24 +13,30 @@ func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
 	skeleton.RegisterChanRPC("CloseAgent", rpcCloseAgent)
 	skeleton.RegisterChanRPC("SwitchRouterMsg", rpcSwitchRouterMsg)
+	skeleton.RegisterChanRPC("OnServiceMessage", onServiceMessage)
 }
 
 func rpcNewAgent(args []interface{}) {
-	a := args[0].(gate.Agent)
-	sessionId:= uuid.GenUid()
-	a.SetUserData(sessionId)
 	log.Debug("one client connect to gw")
-	sendMessage(a, &pb.StcUserEnter{UserId:int32(12500),Result:"sddff"})
+	a := args[0].(gate.Agent)
+	sessionId := uuid.GenUid()
+	a.SetUserData(sessionId)
+	e := UserManager.UserConnect(sessionId, a)
+	if e != nil {
+		log.Debug(e.Error())
+	}
 }
 
 func rpcCloseAgent(args []interface{}) {
-	a := args[0].(gate.Agent)
-	_ = a
 	log.Debug("one client disconnect from gw")
+	a := args[0].(gate.Agent)
+	id := a.UserData()
+	sessionId := id.(int64)
+	UserManager.UserDisconnect(sessionId)
 }
 
 func rpcSwitchRouterMsg(args []interface{}) {
-	log.Debug("switchRoute message")
+	//log.Debug("switchRoute message")
 	a := args[1].(gate.Agent)
 	message := args[0].(*pb.Message)
 	m, err := msg.Processor.Unmarshal(message.Body)
@@ -38,8 +44,11 @@ func rpcSwitchRouterMsg(args []interface{}) {
 		log.Debug("unmarshal message error: %v", err)
 	}
 	m1 := m.(proto.Message)
-	log.Debug("switchRoute m1: %s", m1.String())
+	//log.Debug("switchRoute m1: %s", m1.String())
 	switch message.Header.ServiceId0 {
+	case int32(pb.SERVICE_G001):
+		c := GetService(pb.SERVICE_G001)
+		c.SendToService(m1)
 	default:
 		err := msg.Processor.Route(m, a)
 		if err != nil {
@@ -49,15 +58,22 @@ func rpcSwitchRouterMsg(args []interface{}) {
 	}
 }
 
-func sendMessage(a gate.Agent, m interface{}) {
-	m1 := m.(proto.Message)
-	body, err := msg.Processor.Marshal(m1)
+func onServiceMessage(args []interface{}) {
+	//a := args[1].(tcpclient.Agent)
+	//log.Debug("%s", a.GetClientId())
+	message := args[0].(*pb.Message)
+	m, err := msg.Processor.Unmarshal(message.Body)
 	if err != nil {
-		log.Error("SendToService proto.Marshal message err:%s", err.Error())
+		log.Debug("unmarshal message error: %v", err)
 	}
-	bytes := make([]byte, 0)
-	for _, b := range body {
-		bytes = append(bytes, b...)
+	if message.Header.Broadcast {
+		for _, user := range UserManager.UserIdToUser {
+			user.SendMessage(m)
+		}
+	} else {
+		user := UserManager.GetAgentByUserId(message.Header.UserId)
+		if user != nil {
+			user.SendMessage(m)
+		}
 	}
-	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{UserId:1000}})
 }

@@ -1,9 +1,9 @@
 package pb
 
 var (
-	servicePrefix = "/fantacy/server/"
-	webPrefix     = "/fantacy/web/"
-	gwPrefix      = "/fantacy/gw/"
+	servicePrefix = "/fantasy/server/"
+	webPrefix     = "/fantasy/web/"
+	gwPrefix      = "/fantasy/gw/"
 )
 
 func ServicePrefix() string {
@@ -19,7 +19,7 @@ func GwPrefix() string {
 }
 
 func GetName(id SERVICE) string {
-	return "fantacy." + SERVICE_name[int32(id)]
+	return "fantasy." + SERVICE_name[int32(id)]
 }
 
 func GetServerKey(id SERVICE) string {

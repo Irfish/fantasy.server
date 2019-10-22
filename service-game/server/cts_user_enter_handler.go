@@ -10,5 +10,5 @@ func ctsUserEnterHandler(args []interface{}) {
 	m := args[0].(*pb.CtsUserEnter)
 	log.Debug("received message from client:%s", m.Token)
 	a := args[1].(gate.Agent)
-	sendMessage(a, &pb.StcUserEnter{Result: "succeed enter"})
+	sendMessage(a, &pb.StcUserEnter{Result: "succeed enter "})
 }

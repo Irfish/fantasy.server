@@ -38,6 +38,7 @@ func (s *Node) OnNodeUnregister(key string) {
 
 func CreateServiceClient(name, addr string, autoConnect bool) *client2.Client {
 	gameClient := client2.NewClient(addr, name, autoConnect)
+	gameClient.AppendOuterChanRpc(pb.GetName(pb.SERVICE_GW),ChanRpc)
 	go func() {
 		destroyChan := make(chan bool, 1)
 		go gameClient.Run(destroyChan)
@@ -45,4 +46,13 @@ func CreateServiceClient(name, addr string, autoConnect bool) *client2.Client {
 		gameClient = nil
 	}()
 	return gameClient
+}
+
+func GetService(service pb.SERVICE ) *client2.Client {
+	key:= pb.GetServerKey(service)
+	if c,ok:= ServiceNode.ServiceToClient[key];ok{
+		return c
+	}
+	log.Debug("can not found service: %s",key)
+	return nil
 }

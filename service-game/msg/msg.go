@@ -8,6 +8,7 @@ import (
 var Processor = protobuf.NewProcessor()
 
 func init() {
+	Processor.SetByteOrder(true)
 	Processor.Register(&pb.Message{})
 	Processor.Register(&pb.CtsUserEnter{})
 	Processor.Register(&pb.StcUserEnter{})

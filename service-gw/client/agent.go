@@ -17,19 +17,16 @@ func rpcClientConnected(args []interface{}) {
 	a := args[0].(tcpclient.Agent)
 	serviceToAgent[a.GetClientId()] = a
 	log.Debug("connected to service: %s", a.GetClientId())
-	sendMessage(a, &pb.CtsUserEnter{UserId: 10000, Token: []byte(a.GetClientId())})
-	_ = a
 }
 
 func rpcClientClosed(args []interface{}) {
 	a := args[0].(tcpclient.Agent)
 	delete(serviceToAgent, a.GetClientId())
 	log.Debug("disconnected from service: %s", a.GetClientId())
-	_ = a
 }
 
 func rpcSwitchRouterMsg(args []interface{}) {
-	log.Debug("switchRoute message")
+	//log.Debug("switchRoute message")
 	a := args[1].(tcpclient.Agent)
 	message := args[0].(*pb.Message)
 	m, err := msg.Processor.Unmarshal(message.Body)
@@ -37,6 +34,8 @@ func rpcSwitchRouterMsg(args []interface{}) {
 		log.Debug("unmarshal message error: %v", err)
 	}
 	switch message.Header.ServiceId0 {
+	case int32(pb.SERVICE_GW):
+		a.CallOuterRpc(pb.GetName(pb.SERVICE_GW), "OnServiceMessage", message, a)
 	default:
 		err := msg.Processor.Route(m, a)
 		if err != nil {
