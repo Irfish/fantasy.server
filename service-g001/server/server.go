@@ -5,8 +5,8 @@ import (
 	"github.com/Irfish/component/leaf/gate"
 	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/pb"
-	"github.com/Irfish/fantasy.server/service-game/base"
-	"github.com/Irfish/fantasy.server/service-game/msg"
+	"github.com/Irfish/fantasy.server/service-g001/base"
+	"github.com/Irfish/fantasy.server/service-g001/msg"
 	"github.com/golang/protobuf/proto"
 )
 

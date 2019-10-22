@@ -5,8 +5,8 @@ import (
 	"github.com/Irfish/component/leaf"
 	lconf "github.com/Irfish/component/leaf/conf"
 	"github.com/Irfish/component/log"
-	"github.com/Irfish/fantasy.server/service-game/base"
-	"github.com/Irfish/fantasy.server/service-game/server"
+	"github.com/Irfish/fantasy.server/service-g001/base"
+	"github.com/Irfish/fantasy.server/service-g001/server"
 )
 
 func Run() {

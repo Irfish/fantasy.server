@@ -4,7 +4,7 @@ import (
 	"reflect"
 
 	"github.com/Irfish/fantasy.server/pb"
-	"github.com/Irfish/fantasy.server/service-game/msg"
+	"github.com/Irfish/fantasy.server/service-g001/msg"
 )
 
 func handler(m interface{}, h interface{}) {
