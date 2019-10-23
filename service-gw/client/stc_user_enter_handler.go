@@ -8,7 +8,7 @@ import (
 
 func stcUserEnterHandler(args []interface{}) {
 	m := args[0].(*pb.StcUserEnter)
-	log.Debug("received message form server:%s", m.Result)
+	log.Debug("received message form server:%s", m.UserId)
 	a := args[1].(tcpclient.Agent)
 	_ = a
 }

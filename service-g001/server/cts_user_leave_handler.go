@@ -7,12 +7,12 @@ import (
 	"github.com/Irfish/fantasy.server/service-g001/logic"
 )
 
-func ctsUserEnterHandler(args []interface{}) {
-	m := args[0].(*pb.CtsUserEnter)
-	log.Debug("user enter:%s", m.UserId)
-	p := logic.RoomManager.PlayerEnterRoom(m.UserId)
+func ctsUserLeaveHandler(args []interface{}) {
+	m := args[0].(*pb.CtsUserLeave)
+	log.Debug("user leave:%s", m.UserId)
+	p := logic.RoomManager.PlayerLeaveRoom(m.UserId)
 	a := args[1].(gate.Agent)
-	sendMessage(a, &pb.StcUserEnter{
+	sendMessage(a, &pb.StcUserLeave{
 		UserId:  p.UserId,
 		RoomId:  p.RoomId,
 		ChairId: p.ChairId,

@@ -21,8 +21,7 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type CtsUserEnter struct {
-	UserId               int32    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	Token                []byte   `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	UserId               int64    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -53,23 +52,20 @@ func (m *CtsUserEnter) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CtsUserEnter proto.InternalMessageInfo
 
-func (m *CtsUserEnter) GetUserId() int32 {
+func (m *CtsUserEnter) GetUserId() int64 {
 	if m != nil {
 		return m.UserId
 	}
 	return 0
 }
 
-func (m *CtsUserEnter) GetToken() []byte {
-	if m != nil {
-		return m.Token
-	}
-	return nil
-}
-
 type StcUserEnter struct {
-	UserId               int32    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	Result               string   `protobuf:"bytes,2,opt,name=result,proto3" json:"result,omitempty"`
+	UserId               int64    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	RoomId               int64    `protobuf:"varint,3,opt,name=roomId,proto3" json:"roomId,omitempty"`
+	ChairId              int32    `protobuf:"varint,4,opt,name=chairId,proto3" json:"chairId,omitempty"`
+	Gold                 int64    `protobuf:"varint,5,opt,name=gold,proto3" json:"gold,omitempty"`
+	HeadId               int64    `protobuf:"varint,6,opt,name=headId,proto3" json:"headId,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -100,35 +96,172 @@ func (m *StcUserEnter) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_StcUserEnter proto.InternalMessageInfo
 
-func (m *StcUserEnter) GetUserId() int32 {
+func (m *StcUserEnter) GetUserId() int64 {
 	if m != nil {
 		return m.UserId
 	}
 	return 0
 }
 
-func (m *StcUserEnter) GetResult() string {
+func (m *StcUserEnter) GetName() string {
 	if m != nil {
-		return m.Result
+		return m.Name
 	}
 	return ""
+}
+
+func (m *StcUserEnter) GetRoomId() int64 {
+	if m != nil {
+		return m.RoomId
+	}
+	return 0
+}
+
+func (m *StcUserEnter) GetChairId() int32 {
+	if m != nil {
+		return m.ChairId
+	}
+	return 0
+}
+
+func (m *StcUserEnter) GetGold() int64 {
+	if m != nil {
+		return m.Gold
+	}
+	return 0
+}
+
+func (m *StcUserEnter) GetHeadId() int64 {
+	if m != nil {
+		return m.HeadId
+	}
+	return 0
+}
+
+type CtsUserLeave struct {
+	UserId               int64    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	ChairId              int32    `protobuf:"varint,2,opt,name=chairId,proto3" json:"chairId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CtsUserLeave) Reset()         { *m = CtsUserLeave{} }
+func (m *CtsUserLeave) String() string { return proto.CompactTextString(m) }
+func (*CtsUserLeave) ProtoMessage()    {}
+func (*CtsUserLeave) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ea89c8060d2ffc2, []int{2}
+}
+
+func (m *CtsUserLeave) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CtsUserLeave.Unmarshal(m, b)
+}
+func (m *CtsUserLeave) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CtsUserLeave.Marshal(b, m, deterministic)
+}
+func (m *CtsUserLeave) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CtsUserLeave.Merge(m, src)
+}
+func (m *CtsUserLeave) XXX_Size() int {
+	return xxx_messageInfo_CtsUserLeave.Size(m)
+}
+func (m *CtsUserLeave) XXX_DiscardUnknown() {
+	xxx_messageInfo_CtsUserLeave.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CtsUserLeave proto.InternalMessageInfo
+
+func (m *CtsUserLeave) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+func (m *CtsUserLeave) GetChairId() int32 {
+	if m != nil {
+		return m.ChairId
+	}
+	return 0
+}
+
+type StcUserLeave struct {
+	UserId               int64    `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	RoomId               int64    `protobuf:"varint,3,opt,name=roomId,proto3" json:"roomId,omitempty"`
+	ChairId              int32    `protobuf:"varint,4,opt,name=chairId,proto3" json:"chairId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *StcUserLeave) Reset()         { *m = StcUserLeave{} }
+func (m *StcUserLeave) String() string { return proto.CompactTextString(m) }
+func (*StcUserLeave) ProtoMessage()    {}
+func (*StcUserLeave) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ea89c8060d2ffc2, []int{3}
+}
+
+func (m *StcUserLeave) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_StcUserLeave.Unmarshal(m, b)
+}
+func (m *StcUserLeave) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_StcUserLeave.Marshal(b, m, deterministic)
+}
+func (m *StcUserLeave) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StcUserLeave.Merge(m, src)
+}
+func (m *StcUserLeave) XXX_Size() int {
+	return xxx_messageInfo_StcUserLeave.Size(m)
+}
+func (m *StcUserLeave) XXX_DiscardUnknown() {
+	xxx_messageInfo_StcUserLeave.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StcUserLeave proto.InternalMessageInfo
+
+func (m *StcUserLeave) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+func (m *StcUserLeave) GetRoomId() int64 {
+	if m != nil {
+		return m.RoomId
+	}
+	return 0
+}
+
+func (m *StcUserLeave) GetChairId() int32 {
+	if m != nil {
+		return m.ChairId
+	}
+	return 0
 }
 
 func init() {
 	proto.RegisterType((*CtsUserEnter)(nil), "pb.CtsUserEnter")
 	proto.RegisterType((*StcUserEnter)(nil), "pb.StcUserEnter")
+	proto.RegisterType((*CtsUserLeave)(nil), "pb.CtsUserLeave")
+	proto.RegisterType((*StcUserLeave)(nil), "pb.StcUserLeave")
 }
 
 func init() { proto.RegisterFile("user_enter.proto", fileDescriptor_8ea89c8060d2ffc2) }
 
 var fileDescriptor_8ea89c8060d2ffc2 = []byte{
-	// 124 bytes of a gzipped FileDescriptorProto
+	// 193 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x2d, 0x4e, 0x2d,
 	0x8a, 0x4f, 0xcd, 0x2b, 0x49, 0x2d, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48,
-	0x52, 0xb2, 0xe1, 0xe2, 0x71, 0x2e, 0x29, 0x0e, 0x2d, 0x4e, 0x2d, 0x72, 0x05, 0xc9, 0x08, 0x89,
-	0x71, 0xb1, 0x81, 0xd4, 0x79, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0xb0, 0x06, 0x41, 0x79, 0x42,
-	0x22, 0x5c, 0xac, 0x25, 0xf9, 0xd9, 0xa9, 0x79, 0x12, 0x4c, 0x0a, 0x8c, 0x1a, 0x3c, 0x41, 0x10,
-	0x8e, 0x92, 0x1d, 0x17, 0x4f, 0x70, 0x49, 0x32, 0x61, 0xdd, 0x62, 0x5c, 0x6c, 0x45, 0xa9, 0xc5,
-	0xa5, 0x39, 0x25, 0x60, 0xed, 0x9c, 0x41, 0x50, 0x5e, 0x12, 0x1b, 0xd8, 0x21, 0xc6, 0x80, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0xcf, 0xe2, 0x89, 0xba, 0x9c, 0x00, 0x00, 0x00,
+	0x52, 0x52, 0xe3, 0xe2, 0x71, 0x2e, 0x29, 0x0e, 0x2d, 0x4e, 0x2d, 0x72, 0x05, 0xc9, 0x08, 0x89,
+	0x71, 0xb1, 0x81, 0xd4, 0x79, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0x30, 0x07, 0x41, 0x79, 0x4a,
+	0x33, 0x18, 0xb9, 0x78, 0x82, 0x4b, 0x92, 0x09, 0x2a, 0x14, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc,
+	0x4d, 0x95, 0x60, 0x52, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x41, 0x6a, 0x8b, 0xf2, 0xf3, 0x73,
+	0x3d, 0x53, 0x24, 0x98, 0x21, 0x6a, 0x21, 0x3c, 0x21, 0x09, 0x2e, 0xf6, 0xe4, 0x8c, 0xc4, 0x4c,
+	0x90, 0x21, 0x2c, 0x0a, 0x8c, 0x1a, 0xac, 0x41, 0x30, 0x2e, 0xc8, 0x94, 0xf4, 0xfc, 0x9c, 0x14,
+	0x09, 0x56, 0xb0, 0x7a, 0x30, 0x1b, 0x64, 0x4a, 0x46, 0x6a, 0x62, 0x8a, 0x67, 0x8a, 0x04, 0x1b,
+	0xc4, 0x14, 0x08, 0x4f, 0xc9, 0x01, 0xee, 0x05, 0x9f, 0xd4, 0xc4, 0xb2, 0x54, 0x9c, 0x2e, 0x43,
+	0xb2, 0x8d, 0x09, 0xc5, 0x36, 0xa5, 0x08, 0xb8, 0xdf, 0xf0, 0x9b, 0x40, 0xb2, 0x3f, 0x92, 0xd8,
+	0xc0, 0x21, 0x6d, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0xaa, 0x25, 0x73, 0x10, 0x7d, 0x01, 0x00,
+	0x00,
 }
