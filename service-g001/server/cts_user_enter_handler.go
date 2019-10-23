@@ -9,9 +9,15 @@ import (
 
 func ctsUserEnterHandler(args []interface{}) {
 	m := args[0].(*pb.CtsUserEnter)
-	log.Debug("user enter:%s", m.UserId)
-	p := logic.RoomManager.PlayerEnterRoom(m.UserId)
 	a := args[1].(gate.Agent)
+	log.Debug("user enter:%d", m.RoomId)
+	p, e := logic.RoomManager.PlayerEnterRoom(m.UserId, m.RoomId)
+	if e != nil {
+		sendMessage(a, &pb.StcErrorNotice{
+			Info: e.Error(),
+		})
+		return
+	}
 	sendMessage(a, &pb.StcUserEnter{
 		UserId:  p.UserId,
 		RoomId:  p.RoomId,

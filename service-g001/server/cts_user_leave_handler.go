@@ -9,9 +9,15 @@ import (
 
 func ctsUserLeaveHandler(args []interface{}) {
 	m := args[0].(*pb.CtsUserLeave)
-	log.Debug("user leave:%s", m.UserId)
-	p := logic.RoomManager.PlayerLeaveRoom(m.UserId)
 	a := args[1].(gate.Agent)
+	log.Debug("user leave:%d", m.RoomId)
+	p, e := logic.RoomManager.PlayerLeaveRoom(m.ChairId, m.RoomId)
+	if e != nil {
+		sendMessage(a, &pb.StcErrorNotice{
+			Info: e.Error(),
+		})
+		return
+	}
 	sendMessage(a, &pb.StcUserLeave{
 		UserId:  p.UserId,
 		RoomId:  p.RoomId,

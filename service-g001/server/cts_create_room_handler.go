@@ -9,12 +9,17 @@ import (
 
 func ctsCreateRoomHandler(args []interface{}) {
 	m := args[0].(*pb.CtsCreateRoom)
-	log.Debug("create room:%s", m.UserId)
-	p := logic.RoomManager.CreateRoom(m.UserId)
 	a := args[1].(gate.Agent)
+	log.Debug("create room:%d", m.UserId)
+	roomId, e := logic.RoomManager.CreateRoom(m.UserId)
+	if e != nil {
+		sendMessage(a, &pb.StcErrorNotice{
+			Info: e.Error(),
+		})
+		return
+	}
 	sendMessage(a, &pb.StcCreateRoom{
-		UserId:  p.UserId,
-		RoomId:  p.RoomId,
-		ChairId: p.ChairId,
+		UserId: m.UserId,
+		RoomId: roomId,
 	})
 }
