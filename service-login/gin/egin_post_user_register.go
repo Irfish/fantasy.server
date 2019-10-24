@@ -14,7 +14,8 @@ type UserRegister struct {
 }
 
 func NewUserRegister() UserRegister {
-	return UserRegister{}
+	p := UserRegister{}
+	return p
 }
 
 func (p *UserRegister) handle(c *gin.Context) {
@@ -54,3 +55,4 @@ func (p *UserRegister) handle(c *gin.Context) {
 	}
 	result["status"] = true
 }
+

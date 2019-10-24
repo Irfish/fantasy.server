@@ -7,17 +7,23 @@ import (
 	"time"
 
 	"github.com/Irfish/component/hash"
+	"github.com/Irfish/component/log"
+	"github.com/Irfish/component/redis"
 	"github.com/Irfish/component/token"
+	"github.com/Irfish/fantasy.server/pb"
 	"github.com/Irfish/fantasy.server/service-login/orm"
 	"github.com/Irfish/fantasy.server/service-login/server"
 	"github.com/gin-gonic/gin"
+	"github.com/golang/protobuf/proto"
 )
 
 type LoginByAccount struct {
 }
 
 func NewLoginByAccount() LoginByAccount {
-	return LoginByAccount{}
+	p := LoginByAccount{}
+	p.RedisParserInit()
+	return p
 }
 
 func (p *LoginByAccount) handle(c *gin.Context) {
@@ -69,6 +75,15 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	}
 	expireTime := time.Now().Add(time.Second * 60 * 60 * 1).Unix()
 	token := token.GenToken(expireTime, token.GetTokenKey(), u.Id)
+	info := &pb.RedisUserLogin{
+		Token:            token,
+		TokenExpiredTime: expireTime,
+	}
+	_, e1 := redis.RedisHset("service.login.user.login", "info", info)
+	if e1 != nil {
+		e = fmt.Errorf("%s", e1.Error())
+		return
+	}
 
 	result["userId"] = u.Id
 	result["expireTime"] = expireTime
@@ -76,4 +91,39 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	result["status"] = true
 	result["gw"] = gwAddr
 	result["err"] = ""
+}
+
+func (p *LoginByAccount) RedisParserInit() {
+	redis.AppendRedisMarshal(func(keys []string, i1 interface{}) (i interface{}, b bool) {
+		if keys[0] == "hset" && keys[1] == "service.login.user.login" && keys[2] == "info" {
+			i0, ok := i1.(*pb.RedisUserLogin)
+			if ok {
+				i2, e := proto.Marshal(i0)
+				if e != nil {
+					log.Debug("UserRegister RedisParserInit AppendRedisMarshal RedisUserLogin error:", e.Error())
+					return
+				}
+				i = i2
+				b = true
+			}
+		}
+		return
+	})
+	redis.AppendRedisUnmarshal(func(keys []string, i1 interface{}) (i interface{}, b bool) {
+		if keys[0] == "hget" && keys[1] == "service.login.user.login" && keys[2] == "info" {
+			i0, ok := i1.([]byte)
+			if ok {
+				redisUserLogin := &pb.RedisUserLogin{}
+				e := proto.Unmarshal(i0, redisUserLogin)
+				if e != nil {
+					log.Debug("UserRegister RedisParserInit AppendRedisUnmarshal RedisUserLogin error:", e.Error())
+					return
+				}
+				i = redisUserLogin
+				b = true
+			}
+		}
+		return
+	})
+
 }

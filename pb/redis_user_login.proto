@@ -1,0 +1,10 @@
+syntax = "proto3";
+package pb;
+
+message RedisUserLogin{
+    int64 userId=1;
+    bytes token=2;
+    int64 tokenExpiredTime=3;
+}
+
+

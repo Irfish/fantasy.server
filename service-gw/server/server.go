@@ -23,6 +23,7 @@ type Server struct {
 }
 
 func (s *Server) OnInit() {
+	RedisParserInit()
 	s.Gate = &gate.Gate{
 		MaxConnNum:      base.Server.MaxConnNum,
 		PendingWriteNum: base.PendingWriteNum,

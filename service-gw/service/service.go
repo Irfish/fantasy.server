@@ -7,6 +7,7 @@ import (
 	"github.com/Irfish/component/leaf"
 	lconf "github.com/Irfish/component/leaf/conf"
 	"github.com/Irfish/component/log"
+	"github.com/Irfish/component/redis"
 	"github.com/Irfish/fantasy.server/service-gw/base"
 	"github.com/Irfish/fantasy.server/service-gw/msg"
 	"github.com/Irfish/fantasy.server/service-gw/server"
@@ -19,6 +20,7 @@ func Run() {
 	lconf.LogFlag = base.LogFlag
 	lconf.ConsolePort = base.Server.ConsolePort
 	lconf.ProfilePath = base.Server.ProfilePath
+	redis.Run()
 	//连接etcd
 	etcd3.Init([]string{base.Server.EtcdAddr}, 3)
 	msg.Processor.Range(func(id uint16, t reflect.Type) {
