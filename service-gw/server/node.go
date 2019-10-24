@@ -1,6 +1,8 @@
 package server
 
 import (
+	"fmt"
+
 	"github.com/Irfish/component/etcd3"
 	"github.com/Irfish/component/log"
 	"github.com/Irfish/fantasy.server/pb"
@@ -38,7 +40,7 @@ func (s *Node) OnNodeUnregister(key string) {
 
 func CreateServiceClient(name, addr string, autoConnect bool) *client2.Client {
 	gameClient := client2.NewClient(addr, name, autoConnect)
-	gameClient.AppendOuterChanRpc(pb.GetName(pb.SERVICE_GW),ChanRpc)
+	gameClient.AppendOuterChanRpc(pb.GetName(pb.SERVICE_GW), ChanRpc)
 	go func() {
 		destroyChan := make(chan bool, 1)
 		go gameClient.Run(destroyChan)
@@ -48,11 +50,10 @@ func CreateServiceClient(name, addr string, autoConnect bool) *client2.Client {
 	return gameClient
 }
 
-func GetService(service pb.SERVICE ) *client2.Client {
-	key:= pb.GetServerKey(service)
-	if c,ok:= ServiceNode.ServiceToClient[key];ok{
-		return c
+func GetService(service pb.SERVICE) (*client2.Client, error) {
+	key := pb.GetServerKey(service)
+	if c, ok := ServiceNode.ServiceToClient[key]; ok {
+		return c, nil
 	}
-	log.Debug("can not found service: %s",key)
-	return nil
+	return nil, fmt.Errorf("can not found service: %s", key)
 }

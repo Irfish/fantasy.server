@@ -1,6 +1,7 @@
 package gin
 
 import (
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -87,7 +88,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 
 	result["userId"] = u.Id
 	result["expireTime"] = expireTime
-	result["token"] = token
+	result["token"] = base64.URLEncoding.EncodeToString(info.Token)
 	result["status"] = true
 	result["gw"] = gwAddr
 	result["err"] = ""
