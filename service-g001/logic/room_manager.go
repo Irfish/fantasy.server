@@ -44,8 +44,7 @@ func (m *Manager) PlayerEnterRoom(userId, roomId int64) (*Player, error) {
 		RoomId: room.Id,
 		UserId: userId,
 	}
-	e := room.PlayerEnter(p)
-	return p, e
+	return room.PlayerEnter(p)
 }
 
 func (m *Manager) PlayerLeaveRoom(chairId int32, roomId int64) (*Player, error) {
@@ -53,9 +52,16 @@ func (m *Manager) PlayerLeaveRoom(chairId int32, roomId int64) (*Player, error) 
 	if !ok {
 		return nil, fmt.Errorf("room not exist (id:%d)", roomId)
 	}
-	p := &Player{}
-	room.PlayerLeave(chairId)
-	return p, nil
+	return room.PlayerLeave(chairId)
+}
+
+func (m *Manager) PlayerReady(chairId int32, roomId int64, status bool) (e error) {
+	room, ok := m.RoomIdToRoom[roomId]
+	if !ok {
+		return fmt.Errorf("room not exist (id:%d)", roomId)
+	}
+	e = room.PlayerReady(chairId, status)
+	return
 }
 
 func (m *Manager) PlayPiece(chairId int32, roomId int64, x, y int32) (list []*pb.Piece, e error) {

@@ -22,4 +22,7 @@ func init() {
 	Processor.Register(&pb.CtsPlayPiece{})
 	Processor.Register(&pb.StcPlayPiece{})
 	Processor.Register(&pb.StcGameResult{})
+	Processor.Register(&pb.CtsUserReady{})
+	Processor.Register(&pb.StcUserReady{})
+
 }

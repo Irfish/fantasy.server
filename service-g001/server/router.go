@@ -21,6 +21,7 @@ func router() {
 	msg.Processor.SetRouter(&pb.CtsUserLeave{}, ChanRpc)
 	msg.Processor.SetRouter(&pb.CtsCreateRoom{}, ChanRpc)
 	msg.Processor.SetRouter(&pb.CtsPlayPiece{}, ChanRpc)
+	msg.Processor.SetRouter(&pb.CtsUserReady{}, ChanRpc)
 }
 
 func registerHandler() {
@@ -28,4 +29,5 @@ func registerHandler() {
 	handler(&pb.CtsUserLeave{}, ctsUserLeaveHandler)
 	handler(&pb.CtsCreateRoom{}, ctsCreateRoomHandler)
 	handler(&pb.CtsPlayPiece{}, ctsPlayPieceHandler)
+	handler(&pb.CtsUserReady{}, ctsUserReadyHandler)
 }

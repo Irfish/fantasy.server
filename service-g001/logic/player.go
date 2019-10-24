@@ -8,17 +8,22 @@ const (
 )
 
 type Player struct {
-	UserId     int64
-	Gold       int64
-	Name       string
-	Status     int32
-	PieceColor int32
-	RoomId     int64
-	ChairId    int32
+	UserId      int64
+	Gold        int64
+	Name        string
+	Status      int32
+	PieceColor  int32
+	RoomId      int64
+	ChairId     int32
+	ReadyStatus bool
 }
 
 func (p *Player) Play(x, y int32) (list []*pb.Piece, e error) {
 	piece := pb.Piece{Value: p.PieceColor, X: x, Y: y}
 	list, e = PlayPiece(piece)
 	return
+}
+
+func (p *Player) Ready(status bool) {
+	p.ReadyStatus = status
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package pb;
+
+message CtsUserReady{
+    int64 roomId=1;
+    int32 chairId=2;
+    bool status=3;
+}
+
+message StcUserReady{
+    int64 roomId=1;
+    int32 chairId=2;
+    bool status=3;
+}
