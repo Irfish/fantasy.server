@@ -1,0 +1,30 @@
+syntax = "proto3";
+package pb;
+
+message CtsPlayPiece{
+    int64 roomId=1;
+    int32 chairId=2;
+    int32 x=3;
+    int32 y=4;
+}
+
+message StcPlayPiece{
+    int64 roomId=1;
+    int32 chairId=2;
+    int32 x=3;
+    int32 y=4;
+}
+
+message StcGameResult{
+    int32 winner=1;
+    int32 looser=2;
+    repeated Piece pieceList=3;
+}
+
+message Piece {
+    int32 value=1;
+    int32 x=2;
+    int32 y=3;
+}
+
+

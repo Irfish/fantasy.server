@@ -20,10 +20,12 @@ func router() {
 	msg.Processor.SetRouter(&pb.CtsUserEnter{}, ChanRpc)
 	msg.Processor.SetRouter(&pb.CtsUserLeave{}, ChanRpc)
 	msg.Processor.SetRouter(&pb.CtsCreateRoom{}, ChanRpc)
+	msg.Processor.SetRouter(&pb.CtsPlayPiece{}, ChanRpc)
 }
 
 func registerHandler() {
 	handler(&pb.CtsUserEnter{}, ctsUserEnterHandler)
 	handler(&pb.CtsUserLeave{}, ctsUserLeaveHandler)
 	handler(&pb.CtsCreateRoom{}, ctsCreateRoomHandler)
+	handler(&pb.CtsPlayPiece{}, ctsPlayPieceHandler)
 }

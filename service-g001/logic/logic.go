@@ -1,16 +1,16 @@
 package logic
 
-var (
-	TablePanel [][]int32
-	MaxX       int
-	MaxY       int
+import (
+	"fmt"
+
+	"github.com/Irfish/fantasy.server/pb"
 )
 
-type Piece struct {
-	Value int32
-	X     int
-	Y     int
-}
+var (
+	TablePanel [][]int32
+	MaxX       int32
+	MaxY       int32
+)
 
 const (
 	PieceValueZero  = 0 //空白棋子
@@ -26,7 +26,10 @@ const (
 )
 
 func InitTable(maxX, maxY int) {
+	MaxX = int32(maxX)
+	MaxY = int32(maxY)
 	TablePanel = make([][]int32, maxX)
+
 	for i := 0; i < maxX; i++ {
 		TablePanel[i] = make([]int32, maxY)
 		for j := 0; j < maxY; j++ {
@@ -35,18 +38,20 @@ func InitTable(maxX, maxY int) {
 	}
 }
 
-func PlayPiece(piece Piece) bool {
+func PlayPiece(piece pb.Piece) (list []*pb.Piece, e error) {
 	if piece.X >= MaxX || piece.Y >= MaxY || piece.X < 0 || piece.Y < 0 {
-		return false
+		e = fmt.Errorf("x or y not illegal")
+		return
 	}
 	if TablePanel[piece.X][piece.Y] == 0 {
 		TablePanel[piece.X][piece.Y] = piece.Value
 	}
-	return true
+	list = CheckWin(piece)
+	return
 }
 
 //以落子的点为中心进行查找
-func CheckWin(piece Piece) (list []Piece) {
+func CheckWin(piece pb.Piece) (list []*pb.Piece) {
 	//四个方向 1,2,3,4
 	p1 := check(piece, DirectionHorizontal)
 	if len(p1) >= WinCount {
@@ -67,22 +72,28 @@ func CheckWin(piece Piece) (list []Piece) {
 	return
 }
 
-func check(piece Piece, d int) (pieceList []Piece) {
+func check(piece pb.Piece, d int) (pieceList []*pb.Piece) {
 	switch d {
 	case DirectionHorizontal: //横向
 		x := piece.X
 		for {
 			if TablePanel[x][piece.Y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: piece.Y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: piece.Y, Value: piece.Value})
 			} else {
 				break
 			}
 			x++
+			if x >= MaxX {
+				break
+			}
 		}
-		x = piece.X
+		x = piece.X - 1
 		for {
+			if x < 0 {
+				break
+			}
 			if TablePanel[x][piece.Y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: piece.Y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: piece.Y, Value: piece.Value})
 			} else {
 				break
 			}
@@ -92,16 +103,22 @@ func check(piece Piece, d int) (pieceList []Piece) {
 		y := piece.Y
 		for {
 			if TablePanel[piece.X][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: piece.X, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: piece.X, Y: y, Value: piece.Value})
 			} else {
 				break
 			}
 			y++
+			if y >= MaxY {
+				break
+			}
 		}
-		y = piece.Y
+		y = piece.Y-1
 		for {
+			if y < 0 {
+				break
+			}
 			if TablePanel[piece.X][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: piece.X, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: piece.X, Y: y, Value: piece.Value})
 			} else {
 				break
 			}
@@ -112,18 +129,24 @@ func check(piece Piece, d int) (pieceList []Piece) {
 		y := piece.Y
 		for {
 			if TablePanel[x][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: y, Value: piece.Value})
 			} else {
 				break
 			}
 			x++
 			y++
+			if x >= MaxX || y >= MaxY {
+				break
+			}
 		}
-		x = piece.X
-		y = piece.Y
+		x = piece.X-1
+		y = piece.Y-1
 		for {
+			if x < 0 || y < 0 {
+				break
+			}
 			if TablePanel[x][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: y, Value: piece.Value})
 			} else {
 				break
 			}
@@ -135,18 +158,24 @@ func check(piece Piece, d int) (pieceList []Piece) {
 		y := piece.Y
 		for {
 			if TablePanel[x][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: y, Value: piece.Value})
 			} else {
 				break
 			}
 			x--
 			y++
+			if x < 0 || y >= MaxY {
+				break
+			}
 		}
-		x = piece.X
-		y = piece.Y
+		x = piece.X+1
+		y = piece.Y-1
 		for {
+			if x >= MaxX || y < 0 {
+				break
+			}
 			if TablePanel[x][y] == piece.Value {
-				pieceList = append(pieceList, Piece{X: x, Y: y, Value: piece.Value})
+				pieceList = append(pieceList, &pb.Piece{X: x, Y: y, Value: piece.Value})
 			} else {
 				break
 			}

@@ -19,4 +19,7 @@ func init() {
 	Processor.Register(&pb.StcUserLeave{})
 	Processor.Register(&pb.CtsCreateRoom{})
 	Processor.Register(&pb.StcCreateRoom{})
+	Processor.Register(&pb.CtsPlayPiece{})
+	Processor.Register(&pb.StcPlayPiece{})
+	Processor.Register(&pb.StcGameResult{})
 }

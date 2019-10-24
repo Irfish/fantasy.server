@@ -1,8 +1,10 @@
 package logic
 
+import "github.com/Irfish/fantasy.server/pb"
+
 const (
-	PLAYER_STATUS_ONLINE = iota
-	PLAYER_STATUS_OFFLINE
+	PlayerStatusOnline = iota
+	PlayerStatusOffline
 )
 
 type Player struct {
@@ -15,7 +17,8 @@ type Player struct {
 	ChairId    int32
 }
 
-func (p *Player) Play(x, y int) {
-	piece := Piece{Value: p.PieceColor, X: x, Y: y}
-	PlayPiece(piece)
+func (p *Player) Play(x, y int32) (list []*pb.Piece, e error) {
+	piece := pb.Piece{Value: p.PieceColor, X: x, Y: y}
+	list, e = PlayPiece(piece)
+	return
 }

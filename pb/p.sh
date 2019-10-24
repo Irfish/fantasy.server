@@ -6,3 +6,5 @@ echo $file
 
 protoc  --go_out=. $file
 
+
+

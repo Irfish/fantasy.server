@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Irfish/component/uuid"
+	"github.com/Irfish/fantasy.server/pb"
 )
 
 var (
@@ -31,7 +32,7 @@ func (m *Manager) CreateRoom(userId int64) (int64, error) {
 		room.Run(room.CloseSign)
 	}()
 
-	return room.Id,nil
+	return room.Id, nil
 }
 
 func (m *Manager) PlayerEnterRoom(userId, roomId int64) (*Player, error) {
@@ -55,4 +56,14 @@ func (m *Manager) PlayerLeaveRoom(chairId int32, roomId int64) (*Player, error) 
 	p := &Player{}
 	room.PlayerLeave(chairId)
 	return p, nil
+}
+
+func (m *Manager) PlayPiece(chairId int32, roomId int64, x, y int32) (list []*pb.Piece, e error) {
+	room, ok := m.RoomIdToRoom[roomId]
+	if !ok {
+		e = fmt.Errorf("room not exist (id:%d)", roomId)
+		return
+	}
+	list, e = room.PlayerPlayPiece(chairId, x, y)
+	return
 }

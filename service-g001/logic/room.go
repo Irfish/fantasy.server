@@ -6,12 +6,13 @@ import (
 
 	"github.com/Irfish/component/leaf/module"
 	"github.com/Irfish/component/log"
+	"github.com/Irfish/fantasy.server/pb"
 )
 
 //when the game end, the winner can be challenge by the looser in an another game scene of rpg
 const (
-	ROOM_STATUS_CROWD = iota
-	ROOM_STATUS_FREE
+	RoomStatusCrowd = iota
+	RoomStatusFree
 )
 
 type Room struct {
@@ -30,12 +31,13 @@ type Room struct {
 
 func NewRoom(playerLimit int32) *Room {
 	r := new(Room)
-	r.Status = ROOM_STATUS_FREE
+	r.Status = RoomStatusFree
 	r.ChairIdToPlayer = make(map[int32]*Player, 0)
 	r.PlayerLimit = playerLimit
 	r.ChairIdSeed = make([]int32, playerLimit)
 	r.PlayerCount = 0
 	r.TimeCounterStatus = 0
+	InitTable(10,10)
 	return r
 }
 
@@ -55,7 +57,7 @@ func (r *Room) RandChairId() int32 {
 }
 
 func (r *Room) PlayerEnter(player *Player) error {
-	if r.Status == ROOM_STATUS_CROWD {
+	if r.Status == RoomStatusCrowd {
 		return fmt.Errorf("room is crowd")
 	}
 	chairId := r.RandChairId()
@@ -63,7 +65,12 @@ func (r *Room) PlayerEnter(player *Player) error {
 		return fmt.Errorf("room is crowd")
 	}
 	player.ChairId = chairId
-	player.Status = PLAYER_STATUS_ONLINE
+	player.Status = PlayerStatusOnline
+	if (chairId+1)%2 == 1 {
+		player.PieceColor = PieceValueBlack
+	} else {
+		player.PieceColor = PieceValueWhite
+	}
 	r.ChairIdToPlayer[chairId] = player
 	r.ChairIdSeed[chairId] = 1
 	r.PlayerCount++
@@ -77,18 +84,28 @@ func (r *Room) PlayerLeave(chairId int32) {
 	delete(r.ChairIdToPlayer, chairId)
 	r.ChairIdSeed[chairId] = 0
 	r.PlayerCount--
-	r.Status = ROOM_STATUS_FREE
+	r.Status = RoomStatusFree
 	if r.PlayerCount == 0 {
 		r.StopTimer()
 	}
 }
 
 func (r *Room) PlayerOffLine(chairId int32) {
-	r.ChairIdToPlayer[chairId].Status = PLAYER_STATUS_OFFLINE
+	r.ChairIdToPlayer[chairId].Status = PlayerStatusOffline
 }
 
 func (r *Room) PlayerOnline(chairId int32) {
-	r.ChairIdToPlayer[chairId].Status = PLAYER_STATUS_ONLINE
+	r.ChairIdToPlayer[chairId].Status = PlayerStatusOnline
+}
+
+func (r *Room) PlayerPlayPiece(chairId int32, x, y int32) (list []*pb.Piece, e error) {
+	player, ok := r.ChairIdToPlayer[chairId]
+	if !ok {
+		e = fmt.Errorf("user not exist(%d)", chairId)
+		return
+	}
+	list, e = player.Play(x, y)
+	return
 }
 
 func (r *Room) TimeCounter() {
