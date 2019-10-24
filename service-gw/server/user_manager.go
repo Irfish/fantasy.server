@@ -44,6 +44,13 @@ func (m *Manager) UserConnect(sessionId int64, agent gate.Agent) error {
 	return nil
 }
 
+func (m *Manager) CheckMessage(sessionId int64) (e error) {
+	if _, ok := m.SessionIdToUser[sessionId]; !ok {
+		e = fmt.Errorf("message not illegal")
+	}
+	return
+}
+
 func (m *Manager) UserDisconnect(sessionId int64) {
 	if user, ok := m.SessionIdToUser[sessionId]; ok {
 		userId := user.UserId

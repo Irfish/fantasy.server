@@ -47,6 +47,13 @@ func rpcSwitchRouterMsg(args []interface{}) {
 	//log.Debug("switchRoute m1: %s", m1.String())
 	switch message.Header.ServiceId0 {
 	case int32(pb.SERVICE_G001):
+		e := UserManager.CheckMessage(message.Header.SessionId)
+		if e != nil {
+			sendMessage(a, &pb.StcErrorNotice{
+				Info: e.Error(),
+			})
+			return
+		}
 		c, e := GetService(pb.SERVICE_G001)
 		if e != nil {
 			sendMessage(a, &pb.StcErrorNotice{
