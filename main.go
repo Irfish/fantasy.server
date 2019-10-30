@@ -6,7 +6,7 @@ import (
 
 	"github.com/Irfish/component/pid"
 	db "github.com/Irfish/fantasy.server/service-db/service"
-	g "github.com/Irfish/fantasy.server/service-game/service"
+	g "github.com/Irfish/fantasy.server/service-g001/service"
 	gw "github.com/Irfish/fantasy.server/service-gw/service"
 	logS "github.com/Irfish/fantasy.server/service-log/service"
 	login "github.com/Irfish/fantasy.server/service-login/service"
