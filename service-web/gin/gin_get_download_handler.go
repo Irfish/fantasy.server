@@ -3,8 +3,8 @@ package gin
 import (
 	"net/http"
 	"os"
-	"strings"
 
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,18 +16,16 @@ func NewDownload() Download {
 }
 
 func (p *Download) handle(c *gin.Context) {
-	s := strings.Split(c.Request.URL.Path, "/")
-	if len(s) > 2 {
-		//file:="files/files.txt /"
-		file := "files/" + s[len(s)-2] + "/" + s[len(s)-1]
-		if exist := checkFileIsExist(file); !exist {
-			c.JSON(http.StatusNotFound, gin.H{"error": "file not exist ","status":"StatusNotFound"})
-			return
-		}
-		http.ServeFile(c.Writer, c.Request, file)
+	platform := c.Param("platform")
+	file := c.Param("filePath")
+	fileDir := "files/" + platform + "/" + file
+	fmt.Println("fileDir:", fileDir)
+	if exist := checkFileIsExist(fileDir); !exist {
+		c.JSON(http.StatusNotFound, gin.H{"error": "file not exist:" + fileDir, "status": "StatusNotFound"})
 		return
 	}
-	c.JSON(http.StatusNotFound, gin.H{"error": "file path error","status":"StatusNotFound"})
+	http.ServeFile(c.Writer, c.Request, fileDir)
+	return
 }
 
 func (p *Download) handle1(c *gin.Context) {

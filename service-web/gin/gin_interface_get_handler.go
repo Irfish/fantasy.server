@@ -10,11 +10,7 @@ func (s *Gin) GinGetHandler() map[string]func(*gin.Context) {
 	}
 	{
 		handler := NewDownload()
-		ret["/test/win/files.txt"] = handler.handle
-		ret["/test/win/lobby.unity3d"] = handler.handle
-		ret["/test/win/lobby.unity3d.manifest"] = handler.handle
-		ret["/test/win/lobby.unity3d.manifest.meta"] = handler.handle
-		ret["/test/win/lobby.unity3d.meta"] = handler.handle
+		ret["ui/:platform/:filePath"] = handler.handle //下载资源路由 如何多层匹配 ? ? ?
 	}
 	return ret
 }
