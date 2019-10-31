@@ -10,7 +10,11 @@ func (s *Gin) GinGetHandler() map[string]func(*gin.Context) {
 	}
 	{
 		handler := NewDownload()
-		ret["/Downloads"] = handler.handle
+		ret["/test/win/files.txt"] = handler.handle
+		ret["/test/win/lobby.unity3d"] = handler.handle
+		ret["/test/win/lobby.unity3d.manifest"] = handler.handle
+		ret["/test/win/lobby.unity3d.manifest.meta"] = handler.handle
+		ret["/test/win/lobby.unity3d.meta"] = handler.handle
 	}
 	return ret
 }

@@ -3,6 +3,7 @@ package gin
 import (
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +16,21 @@ func NewDownload() Download {
 }
 
 func (p *Download) handle(c *gin.Context) {
+	s := strings.Split(c.Request.URL.Path, "/")
+	if len(s) > 2 {
+		//file:="files/files.txt /"
+		file := "files/" + s[len(s)-2] + "/" + s[len(s)-1]
+		if exist := checkFileIsExist(file); !exist {
+			c.JSON(http.StatusNotFound, gin.H{"error": "file not exist ","status":"StatusNotFound"})
+			return
+		}
+		http.ServeFile(c.Writer, c.Request, file)
+		return
+	}
+	c.JSON(http.StatusNotFound, gin.H{"error": "file path error","status":"StatusNotFound"})
+}
+
+func (p *Download) handle1(c *gin.Context) {
 	response, err := http.Get("http://192.168.0.130:4000/files/egin.cfg")
 	if err != nil || response.StatusCode != http.StatusOK {
 		c.Status(http.StatusServiceUnavailable)
