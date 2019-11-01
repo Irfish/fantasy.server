@@ -5,6 +5,7 @@ USE account_db;
 CREATE TABLE `user`(
   `id` bigint(20) AUTO_INCREMENT NOT NULL,
   `user_name` varchar(50) NOT NULL,
+  `phone` int(11) NOT NULL,
   `pwd` varchar(1024) NOT NULL,
   `head_url` varchar(1000) NOT NULL,
   `level` int(10) NOT NULL,

@@ -9,8 +9,8 @@ func (s *Gin) GinGetHandler() map[string]func(*gin.Context) {
 		ret["/verificationCode"] = handler.handle
 	}
 	{
-		handler := NewDownload()
-		ret["ui/:platform/:filePath"] = handler.handle //下载资源路由 如何多层匹配 ? ? ?
+		handler := NewHotUpdateUI()
+		ret["hotUpdate/ui/:platform"] = handler.handle
 	}
 	return ret
 }
