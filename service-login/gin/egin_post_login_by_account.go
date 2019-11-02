@@ -87,12 +87,11 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		return
 	}
 
-
 	result["userId"] = u.Id
 	result["expireTime"] = expireTime
 	result["token"] = base64.URLEncoding.EncodeToString(info.Token)
 	result["status"] = true
-	result["gw"] = strings.Split(gwAddr,":")
+	result["gw"] = strings.Split(gwAddr, ":")
 	result["err"] = ""
 }
 

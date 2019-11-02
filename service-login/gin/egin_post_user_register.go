@@ -55,4 +55,3 @@ func (p *UserRegister) handle(c *gin.Context) {
 	}
 	result["status"] = true
 }
-

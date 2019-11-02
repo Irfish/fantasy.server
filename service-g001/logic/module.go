@@ -18,5 +18,3 @@ func (r *Room) OnDestroy() {
 func (r *Room) Run(closeSig chan bool) {
 	go r.Skeleton.Run(closeSig)
 }
-
-

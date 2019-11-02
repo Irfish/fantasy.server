@@ -1,0 +1,6 @@
+{
+  "LogLevel": "debug",
+  "LogPath": "",
+  "EtcdAddr":"192.168.0.112:2379",
+  "GinAddr": "192.168.0.111:4100"
+}

@@ -112,7 +112,7 @@ func check(piece pb.Piece, d int) (pieceList []*pb.Piece) {
 				break
 			}
 		}
-		y = piece.Y-1
+		y = piece.Y - 1
 		for {
 			if y < 0 {
 				break
@@ -139,8 +139,8 @@ func check(piece pb.Piece, d int) (pieceList []*pb.Piece) {
 				break
 			}
 		}
-		x = piece.X-1
-		y = piece.Y-1
+		x = piece.X - 1
+		y = piece.Y - 1
 		for {
 			if x < 0 || y < 0 {
 				break
@@ -168,8 +168,8 @@ func check(piece pb.Piece, d int) (pieceList []*pb.Piece) {
 				break
 			}
 		}
-		x = piece.X+1
-		y = piece.Y-1
+		x = piece.X + 1
+		y = piece.Y - 1
 		for {
 			if x >= MaxX || y < 0 {
 				break
