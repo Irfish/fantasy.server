@@ -24,7 +24,10 @@ func Run() {
 	//连接etcd
 	etcd3.Init([]string{base.Server.EtcdAddr}, 3)
 	msg.Processor.Range(func(id uint16, t reflect.Type) {
-		log.Debug("message: id =%d,%s", id, t.String())
+		log.Debug("message server: id =%d,%s", id, t.String())
+	})
+	msg.Processor.Range(func(id uint16, t reflect.Type) {
+		log.Debug("message client: id =%d,%s", id, t.String())
 	})
 	leaf.Run(server.Module)
 }
