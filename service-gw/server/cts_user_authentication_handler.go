@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/Irfish/component/log"
 
 	"github.com/Irfish/component/leaf/gate"
 	"github.com/Irfish/component/redis"
@@ -18,6 +19,7 @@ func ctsUserAuthenticationHandler(args []interface{}) {
 			sendMessage(a, &pb.StcErrorNotice{
 				Info: e.Error(),
 			})
+			log.Debug("ctsUserAuthenticationHandler err:%s",e.Error())
 		}
 	}()
 	userData := a.UserData()

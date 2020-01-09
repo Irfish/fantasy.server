@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 #mysql 连接地址
-MYSQL_ADDR="root:123456@tcp(192.168.0.131:3306)/account_db?charset=utf8"
+MYSQL_ADDR="root:123456@tcp(192.168.0.112:3306)/account_db?charset=utf8"
 
 #xorm 模板路径
-XORM_MODULE_PATH="/f/unity/fantacy/server/src/github.com/Irfish/component/xorm/templates"
+#XORM_MODULE_PATH="/f/unity/fantacy/server/src/github.com/Irfish/component/xorm/templates"
+XORM_MODULE_PATH="/D/git/fantacy/server\src/github.com/Irfish/component/xorm/templates"
+
 
 #导出go文件存放路径
 cd ..

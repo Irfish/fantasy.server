@@ -6,7 +6,6 @@ import (
 	"github.com/Irfish/component/uuid"
 	"github.com/Irfish/fantasy.server/pb"
 	"github.com/Irfish/fantasy.server/service-gw/msg"
-	"github.com/golang/protobuf/proto"
 )
 
 func init() {
@@ -39,12 +38,6 @@ func rpcSwitchRouterMsg(args []interface{}) {
 	//log.Debug("switchRoute message")
 	a := args[1].(gate.Agent)
 	message := args[0].(*pb.Message)
-	m, err := msg.Processor.Unmarshal(message.Body)
-	if err != nil {
-		log.Debug("unmarshal message error: %v", err)
-	}
-	m1 := m.(proto.Message)
-	//log.Debug("switchRoute m1: %s", m1.String())
 	switch message.Header.ServiceId0 {
 	case int32(pb.SERVICE_G001):
 		e := UserManager.CheckMessage(message.Header.SessionId)
@@ -61,9 +54,14 @@ func rpcSwitchRouterMsg(args []interface{}) {
 			})
 			return
 		}
-		c.SendToService(m1)
+		c.SendToService(message.Body,message.Header.Id)
 	default:
-		err := msg.Processor.Route(m, a)
+		m, err := msg.Processor.Unmarshal(message.Body)
+		if err != nil {
+			log.Debug("unmarshal message error: %v", err)
+		}
+		//m1 := m.(proto.Message)
+		err = msg.Processor.Route(m, a)
 		if err != nil {
 			log.Debug("route message error: %v", err)
 			break
@@ -72,21 +70,15 @@ func rpcSwitchRouterMsg(args []interface{}) {
 }
 
 func onServiceMessage(args []interface{}) {
-	//a := args[1].(tcpclient.Agent)
-	//log.Debug("%s", a.GetClientId())
 	message := args[0].(*pb.Message)
-	m, err := msg.Processor.Unmarshal(message.Body)
-	if err != nil {
-		log.Debug("unmarshal message error: %v", err)
-	}
 	if message.Header.Broadcast {
 		for _, user := range UserManager.UserIdToUser {
-			user.SendMessage(m)
+			user.SendMessage(message.Body)
 		}
 	} else {
 		user := UserManager.GetAgentByUserId(message.Header.UserId)
 		if user != nil {
-			user.SendMessage(m)
+			user.SendMessage(message.Body)
 		}
 	}
 }

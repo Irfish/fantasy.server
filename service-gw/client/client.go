@@ -56,9 +56,9 @@ func (c *Client) Init() {
 	c.initHandler()
 }
 
-func (c *Client) SendToService(msg proto.Message) {
+func (c *Client) SendToService(msg []byte,id int32) {
 	if a, ok := serviceToAgent[c.Id]; ok {
-		sendMessage(a, msg)
+		a.WriteMsg(&pb.Message{Body: msg, Header: &pb.Header{}})
 		return
 	}
 	log.Debug("client agent not found:%s", c.Id)

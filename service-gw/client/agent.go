@@ -29,15 +29,16 @@ func rpcSwitchRouterMsg(args []interface{}) {
 	//log.Debug("switchRoute message")
 	a := args[1].(tcpclient.Agent)
 	message := args[0].(*pb.Message)
-	m, err := msg.Processor.Unmarshal(message.Body)
-	if err != nil {
-		log.Debug("unmarshal message error: %v", err)
-	}
 	switch message.Header.ServiceId0 {
 	case int32(pb.SERVICE_GW):
 		a.CallOuterRpc(pb.GetName(pb.SERVICE_GW), "OnServiceMessage", message, a)
 	default:
-		err := msg.Processor.Route(m, a)
+		m, err := msg.Processor.Unmarshal(message.Body)
+		if err != nil {
+			log.Debug("rpcSwitchRouterMsg unmarshal message error: %v", err)
+			return
+		}
+		err = msg.Processor.Route(m, a)
 		if err != nil {
 			log.Debug("route message error: %v", err)
 			break

@@ -35,6 +35,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 		if e != nil {
 			result["status"] = false
 			result["err"] = e.Error()
+			log.Debug("%s",e.Error())
 		}
 		c.JSON(http.StatusOK, result)
 	}()
@@ -58,7 +59,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	}
 	exist, err := orm.UserXorm().Get(&u)
 	if err != nil {
-		e = err
+		e = fmt.Errorf("mysql get user err: %s", err.Error())
 		return
 	}
 	if !exist {
@@ -83,7 +84,7 @@ func (p *LoginByAccount) handle(c *gin.Context) {
 	}
 	_, e1 := redis.RedisHset("service.login.user.login", "info", info)
 	if e1 != nil {
-		e = fmt.Errorf("%s", e1.Error())
+		e = fmt.Errorf("redis err: %s", e1.Error())
 		return
 	}
 

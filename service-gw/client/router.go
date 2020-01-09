@@ -2,9 +2,6 @@ package client
 
 import (
 	"reflect"
-
-	"github.com/Irfish/fantasy.server/pb"
-	"github.com/Irfish/fantasy.server/service-gw/msg"
 )
 
 func (c *Client) handler(m interface{}, h interface{}) {
@@ -17,9 +14,9 @@ func (c *Client) initHandler() {
 }
 
 func (c *Client) router() {
-	msg.Processor.SetRouter(&pb.StcUserEnter{}, c.AgentChanRPC)
+	//msg.Processor.SetRouter(&pb.StcUserEnter{}, c.AgentChanRPC)
 }
 
 func (c *Client) registerHandler() {
-	c.handler(&pb.StcUserEnter{}, stcUserEnterHandler)
+	//c.handler(&pb.StcUserEnter{}, stcUserEnterHandler)
 }

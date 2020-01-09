@@ -73,6 +73,6 @@ func sendMessage(a gate.Agent, m interface{}) {
 	}
 	a.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{
 		ServiceId0: int32(pb.SERVICE_GW),
-		UserId:     1003,
+		UserId:     1000,
 	}})
 }

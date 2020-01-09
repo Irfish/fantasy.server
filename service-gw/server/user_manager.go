@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/Irfish/fantasy.server/pb"
 
 	"github.com/Irfish/component/leaf/gate"
 	"github.com/Irfish/component/log"
@@ -17,8 +18,8 @@ type User struct {
 	Agent     gate.Agent
 }
 
-func (u *User) SendMessage(m interface{}) {
-	sendMessage(u.Agent, m)
+func (u *User) SendMessage(bytes []byte) {
+	u.Agent.WriteMsg(&pb.Message{Body: bytes, Header: &pb.Header{UserId: 1000}})
 }
 
 type Manager struct {
@@ -46,7 +47,7 @@ func (m *Manager) UserConnect(sessionId int64, agent gate.Agent) error {
 
 func (m *Manager) CheckMessage(sessionId int64) (e error) {
 	if _, ok := m.SessionIdToUser[sessionId]; !ok {
-		e = fmt.Errorf("message not illegal")
+		e = fmt.Errorf("message not illegal sessionId(%d)",sessionId)
 	}
 	return
 }

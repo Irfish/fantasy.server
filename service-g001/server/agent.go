@@ -32,6 +32,7 @@ func rpcSwitchRouterMsg(args []interface{}) {
 	m, err := msg.Processor.Unmarshal(message.Body)
 	if err != nil {
 		log.Debug("unmarshal message error: %v", err)
+		return
 	}
 	m1 := m.(proto.Message)
 	log.Debug("switchRoute m1: %s", m1.String())
